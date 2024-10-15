@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Điểm danh</title>
+    <link rel="stylesheet" href="./bootstrap-5.0.2-dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            padding: 20px;
+        }
+        .table {
+            border: none;
+        }
+        .table thead th {
+            vertical-align: middle;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .table thead {
+            background-color: rgb(199, 197, 197);
+        }
+        .table tbody tr td {
+            border: none;
+        }
+        .table tbody tr td button,
+        .table tbody tr td .upload-btn {
+            border: 1px solid #007bff;
+        }
+        .table tr {
+            border-bottom: solid 1px rgb(199, 197, 197);
+        }
+        .btn {
+            padding: 5px 10px;
+        }
+        .upload-btn {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+</head>
+<body>
+    <div class="container">
+        <h2>Bảng điều khiển</h2>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Lịch dạy hôm nay</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Lớp của tôi</a>
+            </li>
+        </ul>
+        <br />
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Lớp</th>
+                        <th>Ngày</th>
+                        <th>Tên môn</th>
+                        <th>Mã môn</th>
+                        <th>Phòng</th>
+                        <th>Khu giảng đường</th>
+                        <th>Ca học</th>
+                        <th>Link học trực tuyến</th>
+                        <th style="width: 10%;">Điểm danh</th>
+                        <th>Ghi chú</th>
+                        <th>Điểm giá trị 100%</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>SA20303</td>
+                        <td>2024-10-15 7:00 - 8:50</td>
+                        <td>Tin học</td>
+                        <td>COM107</td>
+                        <td>P307_XKuEai</td>
+                        <td>XKuEai</td>
+                        <td>1</td>
+                        <td>
+                            <div class="form-container">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Nhập link..." />
+                                    <div class="input-group-append">
+                                        <button class="btn upload-btn" type="button">
+                                            <i class="fas fa-upload"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary w-100 attendance-btn" data-id="1">Điểm danh</button>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <!-- Thêm nhiều hàng nếu cần -->
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Lịch dạy 7 ngày tới</h3>
+        <button class="btn btn-primary mb-3">Cập nhật mới</button>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ngày</th>
+                        <th>Lớp</th>
+                        <th>Tên môn</th>
+                        <th>Mã môn</th>
+                        <th>Phòng</th>
+                        <th>Link học trực tuyến</th>
+                        <th>Khu giảng đường</th>
+                        <th>Ca học</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <h3>Lịch thi 7 ngày tới</h3>
+        <button class="btn btn-primary mb-3">Cập nhật mới</button>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Ngày</th>
+                        <th>Lớp</th>
+                        <th>Mã môn (Tên môn)</th>
+                        <th>Phòng</th>
+                        <th>Khu giảng đường</th>
+                        <th>Ca học</th>
+                        <th>Giám thị</th>
+                        <th>Giám thị 2</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const attendanceButtons = document.querySelectorAll('.attendance-btn');
+        attendanceButtons.forEach(button => {
+            button.addEventListener('click', () => {
+             
+                window.location.href = 'student-list.html'; 
+            });
+        });
+    </script>
+</body>
+</html>
