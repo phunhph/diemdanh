@@ -1,89 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Điểm danh</title>
-    <link
-      rel="stylesheet"
-      href="./bootstrap-5.0.2-dist/css/bootstrap.min.css"
-    />
+    <link rel="stylesheet" href="./bootstrap-5.0.2-dist/css/bootstrap.min.css" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-      body {
-        padding: 20px;
-      }
-      .table {
-        border: none;
-      }
-      .table thead th {
-        vertical-align: middle;
-        border-bottom: 1px solid #dee2e6;
-      }
-      .table thead {
-        background-color: rgb(199, 197, 197);
-      }
-      .table tbody tr td {
-        border: none;
-      }
-      .table tbody tr td button {
-        border: 1px solid #007bff;
-      }
-      .table tr {
-        border-bottom: solid 1px rgb(199, 197, 197);
-       text-align: center;
-       margin: 0 auto;
-      }
-      .btn {
-        padding: 5px 10px;
-      }
-      .attendance-btn {
-        color: white;
-      }
-      .not-attended {
-        background-color: red;
-      }
-      .attended {
-        background-color: green;
-      }
+        body {
+            padding: 20px;
+        }
+        .table {
+            border: none;
+        }
+        .table thead th {
+            vertical-align: middle;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .table thead {
+            background-color: rgb(199, 197, 197);
+        }
+        .table tbody tr td {
+            border: none;
+        }
+        .table tbody tr td button {
+            border: 1px solid #007bff;
+        }
+        .table tr {
+            border-bottom: solid 1px rgb(199, 197, 197);
+            text-align: center;
+            margin: 0 auto;
+        }
+        .btn {
+            padding: 5px 10px;
+        }
+        .attendance-btn {
+            color: white;
+        }
+        .not-attended {
+            background-color: red;
+        }
+        .attended {
+            background-color: green;
+        }
+        .toggle-button {
+            position: relative;
+            
+            border-radius: 10px; /* Độ bo góc */
+            overflow: hidden;
+            display: flex;
+        }
+        .toggle-button .btn {
+            width: 50%; /* Chiếm 50% chiều rộng của nút */
+            height: 100%; /* Chiếm toàn bộ chiều cao */
+            border: none; /* Không có đường viền */
+            transition: transform 0.3s; /* Hiệu ứng chuyển động */
+        }
+        .toggle-button .btn-success {
+            background-color: #28a745; /* Màu xanh cho Có mặt */
+            color: white;
+            transform: translateX(0); /* Vị trí ban đầu */
+        }
+        .toggle-button .btn-danger {
+            background-color: #dc3545; /* Màu đỏ cho Vắng mặt */
+            color: white;
+            transform: translateX(90%); /* Vị trí ban đầu */
+        }
+        .toggle-button.active .btn-success {
+            transform: translateX(-90%); /* Di chuyển Có mặt vào */
+        }
+        .toggle-button.active .btn-danger {
+            transform: translateX(0); /* Di chuyển Vắng mặt vào */
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <div class="container">
-      <h2>Bảng điều khiển</h2>
-      <div class="table-responsive">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Tên Lớp</th>
-              <th>Mã Sinh Viên</th>
-              <th>Tên Sinh viên</th>
-              <th>Ảnh</th>
-              <th>Trạng thái</th>
-              <th style="width: 30%">Ghi chú</th>
-            </tr>
-          </thead>
-          <tbody id="studentTableBody">
-            <!-- Dữ liệu sẽ được thêm vào đây -->
-          </tbody>
-        </table>
-      </div>
-      <button id="submitAttendance" class="btn btn-success w-100">
-        Lưu điểm danh
-      </button>
+        <h2>Bảng điều khiển</h2>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tên Lớp</th>
+                        <th>Mã Sinh Viên</th>
+                        <th>Tên Sinh viên</th>
+                        <th>Ảnh</th>
+                        <th style="width: 20%">Trạng thái</th>
+                        <th style="width: 30%">Ghi chú</th>
+                    </tr>
+                </thead>
+                <tbody id="studentTableBody">
+                    <!-- Dữ liệu sẽ được thêm vào đây -->
+                </tbody>
+            </table>
+        </div>
+        <button id="submitAttendance" class="btn btn-success w-100">
+            Lưu điểm danh
+        </button>
     </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      const apiUrl = "https://diemdanh-x7j5.onrender.com/api/students";
+        const apiUrl = "https://diemdanh-x7j5.onrender.com/api/students";
 
-      // Hàm để tải dữ liệu sinh viên
-      const loadStudents = async () => {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        const studentTableBody = document.getElementById("studentTableBody");
+        // Hàm để tải dữ liệu sinh viên
+        const loadStudents = async () => {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            const studentTableBody = document.getElementById("studentTableBody");
 
-        data.forEach((student, index) => {
-          const row = `
+            data.forEach((student, index) => {
+              console.log(student);
+              
+                const isAttended = student.status;
+                const row = `
                     <tr>
                         <td>${index + 1}</td>
                         <td>${student.class}</td>
@@ -91,74 +124,65 @@
                         <td>${student.name}</td>
                         <td><img src="" alt="Avatar" class="img-thumbnail"></td>
                         <td>
-                            <button class="btn attendance-btn ${
-                              student.status ? "attended" : "not-attended"
-                            }" data-id="${student.mssv}">
-                                ${
-                                  student.status
-                                    ? "Đã điểm danh"
-                                    : "Chưa điểm danh"
-                                }
-                            </button>
+                            <div class="toggle-button ${isAttended ? '' : 'active'}" id="toggleButton_${student.mssv}" data-id="${student.mssv}">
+                                <button type="button" class="btn btn-success">Có mặt</button>
+                                <button type="button" class="btn btn-danger">Vắng mặt</button>
+                            </div>
                         </td>
-                        <td> <input style="width: 100%;" type="text" id="note_${
-                          student.mssv
-                        }" value="${student.note || ""}"></td>
+                        <td><input style="width: 100%;" type="text" id="note_${student.mssv}" value="${student.note || ''}"></td>
                     </tr>
                 `;
-          studentTableBody.insertAdjacentHTML("beforeend", row);
+                studentTableBody.insertAdjacentHTML("beforeend", row);
+
+                // Gắn sự kiện cho nút chuyển đổi
+                const toggleButton = document.getElementById(`toggleButton_${student.mssv}`);
+                toggleButton.addEventListener('click', function() {
+                    const isActive = toggleButton.classList.toggle('active');
+                    const successButton = toggleButton.querySelector(".btn-success");
+                    const dangerButton = toggleButton.querySelector(".btn-danger");
+                    
+                   
+                });
+            });
+        };
+
+        // Hàm để xử lý submit điểm danh
+        const submitAttendance = async () => {
+            const attendanceData = [];
+            document.querySelectorAll(".toggle-button").forEach((toggleButton) => {
+                const studentId = toggleButton.getAttribute("data-id");
+                const status = toggleButton.classList.contains("active") ?  false : true;
+                const note = document.getElementById("note_" + studentId).value;
+
+                attendanceData.push({
+                    mssv: studentId,
+                    status: status,
+                    note: note,
+                });
+            });
+
+            // Gửi dữ liệu điểm danh đến server
+            const response = await fetch(`${apiUrl}/attendance`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(attendanceData),
+            });
+
+            if (response.ok) {
+                alert("Trạng thái điểm danh đã được cập nhật!"); // Thông báo thành công
+            } else {
+                alert("Có lỗi xảy ra khi cập nhật trạng thái điểm danh!");
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadStudents();
+            document
+                .getElementById("submitAttendance")
+                .addEventListener("click", submitAttendance);
         });
-
-        // Gắn sự kiện cho các nút điểm danh
-        document.querySelectorAll(".attendance-btn").forEach((button) => {
-          button.addEventListener("click", function () {
-            this.classList.toggle("attended");
-            this.classList.toggle("not-attended");
-            this.textContent = this.classList.contains("attended")
-              ? "Đã điểm danh"
-              : "Chưa điểm danh";
-          });
-        });
-      };
-
-      // Hàm để xử lý submit điểm danh
-      const submitAttendance = async () => {
-        const attendanceData = [];
-        document.querySelectorAll(".attendance-btn").forEach((button) => {
-          const studentId = button.getAttribute("data-id");
-          const status = button.classList.contains("attended");
-          const note = document.getElementById("note_" + studentId).value;
-         
-          attendanceData.push({
-            mssv: studentId,
-            status: status,
-            note: note,
-          });
-        });
-
-        // Gửi dữ liệu điểm danh đến server
-        const response = await fetch(`${apiUrl}/attendance`, {
-          // Gọi endpoint mới
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(attendanceData),
-        });
-
-        if (response.ok) {
-          alert("Trạng thái điểm danh đã được cập nhật!"); // Thông báo thành công
-        } else {
-          alert("Có lỗi xảy ra khi cập nhật trạng thái điểm danh!");
-        }
-      };
-
-      document.addEventListener("DOMContentLoaded", () => {
-        loadStudents();
-        document
-          .getElementById("submitAttendance")
-          .addEventListener("click", submitAttendance);
-      });
     </script>
-  </body>
+</body>
 </html>
